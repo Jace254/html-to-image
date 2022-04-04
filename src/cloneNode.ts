@@ -88,6 +88,7 @@ function cloneCSSStyle<T extends HTMLElement>(nativeNode: T, clonedNode: T) {
         source.getPropertyPriority(name),
       )
     })
+    target.setProperty('-webkit-background-clip', source.getPropertyValue('-webkit-background-clip'), source.getPropertyPriority('-webkit-background-clip'));
   }
 }
 
