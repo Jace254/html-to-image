@@ -1,6 +1,6 @@
-import { Options } from './options'
-import { getBlobFromURL } from './getBlobFromURL'
 import { clonePseudoElements } from './clonePseudoElements'
+import { getBlobFromURL } from './getBlobFromURL'
+import { Options } from './options'
 import { createImage, getMimeType, makeDataUrl, toArray } from './util'
 
 async function cloneCanvasElement(node: HTMLCanvasElement) {
@@ -78,6 +78,7 @@ function cloneCSSStyle<T extends HTMLElement>(nativeNode: T, clonedNode: T) {
     return
   }
 
+  // eslint-disable-next-line spaced-comment
   if (source.cssText) {
     target.cssText = source.cssText
   } else {
@@ -88,7 +89,18 @@ function cloneCSSStyle<T extends HTMLElement>(nativeNode: T, clonedNode: T) {
         source.getPropertyPriority(name),
       )
     })
-    target.setProperty('-webkit-background-clip', source.getPropertyValue('-webkit-background-clip'), source.getPropertyPriority('-webkit-background-clip'));
+  }
+
+  const webkitBackgroundClip = source.getPropertyValue(
+    '-webkit-background-clip',
+  )
+  if (webkitBackgroundClip !== 'border-box') {
+    clonedNode.setAttribute(
+      'style',
+      `${clonedNode.getAttribute(
+        'style',
+      )};-webkit-background-clip:${webkitBackgroundClip};`,
+    )
   }
 }
 
