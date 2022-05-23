@@ -102,6 +102,15 @@ function cloneCSSStyle<T extends HTMLElement>(nativeNode: T, clonedNode: T) {
       )};-webkit-background-clip:${webkitBackgroundClip};`,
     )
   }
+
+  // fix for flex align bug in safari
+  const alignItems = source.getPropertyValue('align-items')
+  if (alignItems !== 'normal') {
+    clonedNode.setAttribute(
+      'style',
+      `${clonedNode.getAttribute('style')};align-items:${alignItems};`,
+    )
+  }
 }
 
 function cloneInputValue<T extends HTMLElement>(nativeNode: T, clonedNode: T) {
