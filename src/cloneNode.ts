@@ -104,12 +104,14 @@ function cloneCSSStyle<T extends HTMLElement>(nativeNode: T, clonedNode: T) {
   }
 
   const fontFeatureSettings = source.getPropertyValue('font-feature-settings')
-  clonedNode.setAttribute(
-    'style',
-    `${clonedNode.getAttribute(
+  if (fontFeatureSettings !== '"kern"') {
+    clonedNode.setAttribute(
       'style',
-    )};font-feature-settings:${fontFeatureSettings};`,
-  )
+      `${clonedNode.getAttribute(
+        'style',
+      )};font-feature-settings:${fontFeatureSettings};`,
+    )
+  }
 
   // fix for flex align bug in safari
   const alignItems = source.getPropertyValue('align-items')
