@@ -121,6 +121,15 @@ function cloneCSSStyle<T extends HTMLElement>(nativeNode: T, clonedNode: T) {
       `${clonedNode.getAttribute('style')};align-items:${alignItems};`,
     )
   }
+
+  // fix for perspective bug in safari
+  const perspective = source.getPropertyValue('perspective')
+  if (perspective !== 'none') {
+    clonedNode.setAttribute(
+      'style',
+      `${clonedNode.getAttribute('style')};perspective:${perspective};`,
+    )
+  }
 }
 
 function cloneInputValue<T extends HTMLElement>(nativeNode: T, clonedNode: T) {
