@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { clonePseudoElements } from './clonePseudoElements'
 import { getBlobFromURL } from './getBlobFromURL'
 import { Options } from './options'
@@ -111,6 +112,20 @@ function cloneCSSStyle<T extends HTMLElement>(nativeNode: T, clonedNode: T) {
         'style',
       )};font-feature-settings:${fontFeatureSettings};`,
     )
+  }
+
+  // fix text wrap issue
+  if (nativeNode.tagName === 'P') {
+    // apply on only <p>
+    const { width } = getComputedStyle(nativeNode)
+    if (width.includes('.')) {
+      // width eg. 1.78px
+      const newWidth = Math.ceil(parseFloat(width))
+      clonedNode.setAttribute(
+        'style',
+        `${clonedNode.getAttribute('style')};width:${newWidth}px;`,
+      )
+    }
   }
 
   // fix for flex align bug in safari
