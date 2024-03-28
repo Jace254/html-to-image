@@ -120,7 +120,11 @@ function cloneCSSStyle<T extends HTMLElement>(nativeNode: T, clonedNode: T) {
     const { width } = getComputedStyle(nativeNode)
     if (width.includes('.')) {
       // width eg. 1.78px
-      const newWidth = Math.ceil(parseFloat(width))
+      let floatWidth = parseFloat(width)
+      if (floatWidth % 1 > 0.9) {
+        floatWidth += 1
+      }
+      const newWidth = Math.ceil(floatWidth)
       clonedNode.setAttribute(
         'style',
         `${clonedNode.getAttribute('style')};width:${newWidth}px;`,
